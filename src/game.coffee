@@ -11,6 +11,12 @@ class Game
       fillStyle: @colors.green
       width: 200
     )
+    @circle = new Circle(
+      fillStyle: @colors.red
+      radius: 20
+      x: 20
+      y: 20
+    )
 
     @requestAnimationFrame = @getAnimationRequest()
 
@@ -23,30 +29,27 @@ class Game
     window.msAnimationStartTime || window.webkitAnimationStartTime ||
     window.oAnimationStartTime || Date.now()
 
-  start: => setInterval(@gameLoop, 500)
+  start: =>
+    @stepStartTime = @getAnimationStartTime()
+    setInterval(@gameLoop, 50)
 
-  getInput: =>
-    @userInput.updateCurrentKeys()
-    console.log 'previous keys', @userInput.previousKeys
-    console.log 'current keys', @userInput.currentKeys
+  getUserInput: => @userInput.updateCurrentKeys()
 
   gameLoop: =>
-    @getInput()
+    @getUserInput()
     @tick()
 
-  tick: =>
-    @stepStartTime = @getAnimationStartTime()
-    @requestAnimationFrame.call(window, @animate)
+  tick: => @requestAnimationFrame.call(window, @animate)
 
   getAnimationRequest: -> window.requestAnimationFrame ||
     window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
     window.msRequestAnimationFrame
 
-  animate: (timestamp) =>
-    dt = timestamp - @stepStartTime
-    console.log 'dt', dt
+  animate: (time) =>
     @clear()
-    @box.draw(@context)
+    dyDx = @userInput.getDirection()
+    @box.draw(@context, dyDx.dx, dyDx.dy)
+    @circle.draw(@context, dyDx.dx, dyDx.dy)
 
   clear: => @context.clearRect(0, 0, @width, @height)
 
