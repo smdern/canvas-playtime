@@ -7,23 +7,24 @@ class Game
     velocityY: 1
     velocityX: 3
     width: 20
+    left: 10
     top: 10
-    left: 20
     behaviors: [Behaviors.moveBall]
-
 
   constructor: ->
     $canvas = $('canvas')
     @context = $canvas[0].getContext('2d')
     @width = $canvas.width()
     @height = $canvas.height()
-    $canvas.mousedown(@spawnBall)
+    $canvas.click(@spawnBall)
     @ballSprites = []
     @ballSprites.push new Sprite(@defaultBall)
 
-  spawnBall: =>
-    console.log 'spawning ball'
-    @ballSprites.push new Sprite(@defaultBall)
+  spawnBall: (event) =>
+    ball = @defaultBall
+    ball.left = event.clientX
+    ball.top = event.clientY
+    @ballSprites.push new Sprite(ball)
 
   start: =>
     @isRunning = true
@@ -46,6 +47,9 @@ class Game
 
   update: (time) =>
     @handleEdgeCollisions()
+    @updateBalls(time)
+
+  updateBalls: (time) =>
     _.each @ballSprites, (ballSprite) =>
       ballSprite.update(@context, time)
 

@@ -100,8 +100,8 @@
       velocityY: 1,
       velocityX: 3,
       width: 20,
+      left: 10,
       top: 10,
-      left: 20,
       behaviors: [Behaviors.moveBall]
     };
 
@@ -109,6 +109,8 @@
       this.handleEdgeCollisions = __bind(this.handleEdgeCollisions, this);
 
       this.draw = __bind(this.draw, this);
+
+      this.updateBalls = __bind(this.updateBalls, this);
 
       this.update = __bind(this.update, this);
 
@@ -127,14 +129,17 @@
       this.context = $canvas[0].getContext('2d');
       this.width = $canvas.width();
       this.height = $canvas.height();
-      $canvas.mousedown(this.spawnBall);
+      $canvas.click(this.spawnBall);
       this.ballSprites = [];
       this.ballSprites.push(new Sprite(this.defaultBall));
     }
 
-    Game.prototype.spawnBall = function() {
-      console.log('spawning ball');
-      return this.ballSprites.push(new Sprite(this.defaultBall));
+    Game.prototype.spawnBall = function(event) {
+      var ball;
+      ball = this.defaultBall;
+      ball.left = event.clientX;
+      ball.top = event.clientY;
+      return this.ballSprites.push(new Sprite(ball));
     };
 
     Game.prototype.start = function() {
@@ -165,8 +170,12 @@
     };
 
     Game.prototype.update = function(time) {
-      var _this = this;
       this.handleEdgeCollisions();
+      return this.updateBalls(time);
+    };
+
+    Game.prototype.updateBalls = function(time) {
+      var _this = this;
       return _.each(this.ballSprites, function(ballSprite) {
         return ballSprite.update(_this.context, time);
       });
