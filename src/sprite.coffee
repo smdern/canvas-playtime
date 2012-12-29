@@ -20,3 +20,9 @@ class Sprite
 
   update: (context, time) => _.each @behaviors, (behavior) => behavior.execute(@, context, time)
 
+  getBoundingBox: =>
+    top: @top
+    left: @left
+    height: @height
+    width: @width
+

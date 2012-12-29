@@ -1,55 +1,62 @@
 class Game
+
+  isRunning: false
+
+  defaultBall:
+    painter: new CirclePainter()
+    velocityY: 1
+    velocityX: 3
+    width: 20
+    top: 10
+    left: 20
+    behaviors: [Behaviors.moveBall]
+
+
   constructor: ->
     $canvas = $('canvas')
     @context = $canvas[0].getContext('2d')
     @width = $canvas.width()
     @height = $canvas.height()
-    @userInput = new UserInputs()
-    @box = new Box(
-      x: 100
-      y: 150
-      fillStyle: @colors.green
-      width: 200
-    )
-    @circle = new Circle(
-      fillStyle: @colors.red
-      radius: 20
-      x: 20
-      y: 20
-    )
+    $canvas.mousedown(@spawnBall)
+    @ballSprites = []
+    @ballSprites.push new Sprite(@defaultBall)
 
-    @requestAnimationFrame = @getAnimationRequest()
-
-  colors:
-    green: "#33A534"
-    black: "#000000"
-    red: "#FF2600"
-
-  getAnimationStartTime: -> window.mozAnimationStartTime ||
-    window.msAnimationStartTime || window.webkitAnimationStartTime ||
-    window.oAnimationStartTime || Date.now()
+  spawnBall: =>
+    console.log 'spawning ball'
+    @ballSprites.push new Sprite(@defaultBall)
 
   start: =>
-    @stepStartTime = @getAnimationStartTime()
-    setInterval(@gameLoop, 50)
+    @isRunning = true
+    requestNextAnimationFrame.call(window, @animate)
 
-  getUserInput: => @userInput.updateCurrentKeys()
+  stop: => @isRunning = false
 
-  gameLoop: =>
-    @getUserInput()
-    @tick()
-
-  tick: => @requestAnimationFrame.call(window, @animate)
-
-  getAnimationRequest: -> window.requestAnimationFrame ||
-    window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
-    window.msRequestAnimationFrame
+  prevTime: Date.now()
 
   animate: (time) =>
-    @clear()
-    dyDx = @userInput.getDirection()
-    @box.draw(@context, dyDx.dx, dyDx.dy)
-    @circle.draw(@context, dyDx.dx, dyDx.dy)
+    dt = (time - @prevTime) / 10
+    @prevTime = time
+    if @isRunning
+      @clear()
+      @update(dt)
+      @draw()
+    requestNextAnimationFrame.call(window, @animate)
 
   clear: => @context.clearRect(0, 0, @width, @height)
+
+  update: (time) =>
+    @handleEdgeCollisions()
+    _.each @ballSprites, (ballSprite) =>
+      ballSprite.update(@context, time)
+
+  draw: => _.each @ballSprites, (ballSprite) => ballSprite.paint(@context)
+
+  handleEdgeCollisions: =>
+    _.each @ballSprites, (ballSprite) =>
+      boundingBox = ballSprite.getBoundingBox()
+      right = boundingBox.left + boundingBox.width
+      bottom = boundingBox.top + boundingBox.height
+
+      ballSprite.velocityX *= -1 if (right > @width || boundingBox.left < 0)
+      ballSprite.velocityY *= -1 if (bottom > @height || boundingBox.top < 0)
 

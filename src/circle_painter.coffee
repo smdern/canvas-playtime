@@ -1,5 +1,4 @@
 class CirclePainter
-
   paint: (sprite, context) =>
     x = sprite.left + sprite.width / 2
     y = sprite.top + sprite.height / 2
@@ -15,11 +14,11 @@ class CirclePainter
     context.shadowOffsetY = -4
     context.shadowBlur = 8
 
-    context.fillStyle = 'rgba(218, 165, 32, 0.1)'
+    context.fillStyle = Colors.red
     context.fill()
 
     context.lineWidth = 5
-    context.strokeStyle = 'rgb(100,100,195)'
+    context.strokeStyle = Colors.black
     context.stroke()
 
     context.restore()
