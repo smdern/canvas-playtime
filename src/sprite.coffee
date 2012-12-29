@@ -9,7 +9,7 @@ class Sprite
     velocityX: 0
     velocityY: 0
     visible: true
-    animating: false
+    animating: true
     behaviors: []
 
   constructor: (args) ->
@@ -18,7 +18,7 @@ class Sprite
 
   paint: (context) => @painter.paint(@, context) if @painter && @visible
 
-  update: (context, time) => _.each @behaviors, (behavior) => behavior.execute(@, context, time)
+  update: (context, time) => (_.each @behaviors, (behavior) => behavior.execute(@, context, time)) if @animating
 
   getBoundingBox: =>
     top: @top

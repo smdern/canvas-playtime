@@ -124,21 +124,33 @@
 
       this.spawnBall = __bind(this.spawnBall, this);
 
+      this.togglePause = __bind(this.togglePause, this);
+
       var $canvas;
       $canvas = $('canvas');
       this.context = $canvas[0].getContext('2d');
       this.width = $canvas.width();
       this.height = $canvas.height();
-      $canvas.click(this.spawnBall);
       this.ballSprites = [];
       this.ballSprites.push(new Sprite(this.defaultBall));
+      $canvas.click(this.spawnBall);
+      key('space', this.togglePause);
     }
+
+    Game.prototype.togglePause = function() {
+      return this.isRunning = !this.isRunning;
+    };
 
     Game.prototype.spawnBall = function(event) {
       var ball;
+      if (!this.isRunning) {
+        return;
+      }
       ball = this.defaultBall;
       ball.left = event.clientX;
       ball.top = event.clientY;
+      ball.velocityY = Math.floor((Math.random() * 5) + 1);
+      ball.velocityX = Math.floor((Math.random() * 5) + 1);
       return this.ballSprites.push(new Sprite(ball));
     };
 
@@ -227,7 +239,7 @@
       velocityX: 0,
       velocityY: 0,
       visible: true,
-      animating: false,
+      animating: true,
       behaviors: []
     };
 
@@ -253,9 +265,11 @@
 
     Sprite.prototype.update = function(context, time) {
       var _this = this;
-      return _.each(this.behaviors, function(behavior) {
-        return behavior.execute(_this, context, time);
-      });
+      if (this.animating) {
+        return _.each(this.behaviors, function(behavior) {
+          return behavior.execute(_this, context, time);
+        });
+      }
     };
 
     Sprite.prototype.getBoundingBox = function() {

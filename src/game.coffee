@@ -16,14 +16,20 @@ class Game
     @context = $canvas[0].getContext('2d')
     @width = $canvas.width()
     @height = $canvas.height()
-    $canvas.click(@spawnBall)
     @ballSprites = []
     @ballSprites.push new Sprite(@defaultBall)
+    $canvas.click(@spawnBall)
+    key 'space', @togglePause
+
+  togglePause: => @isRunning = not @isRunning
 
   spawnBall: (event) =>
+    return unless @isRunning
     ball = @defaultBall
     ball.left = event.clientX
     ball.top = event.clientY
+    ball.velocityY = Math.floor((Math.random()*5)+1)
+    ball.velocityX = Math.floor((Math.random()*5)+1)
     @ballSprites.push new Sprite(ball)
 
   start: =>
