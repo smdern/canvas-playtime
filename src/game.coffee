@@ -1,4 +1,4 @@
-class Game
+class Playtime.Game
 
   constructor: (targetCanvas) ->
     @stage = new createjs.Stage(targetCanvas)
@@ -14,12 +14,11 @@ class Game
     @text.x = 10
     @text.y = 20
 
-    @circle = new Circle()
+    @circle = new Playtime.Skins.Circle()
     @circle.x = 20
     @circle.y = 50
 
   update: (dt) =>
-    console.log 'updating', dt
     @circle.x += (dt / 10)
     @circle.y += (dt / 10)
     @text.scaleX += 0.2

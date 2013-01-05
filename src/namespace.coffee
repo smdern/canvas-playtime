@@ -1,0 +1,3 @@
+window.Playtime ||= {}
+Playtime.Skins ||= {}
+
