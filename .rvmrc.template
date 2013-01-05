@@ -1,0 +1,3 @@
+# modify this to match whatever 1.9.3 ruby that you have installed
+rvm 1.9.3-p327-perf@playtime --create
+

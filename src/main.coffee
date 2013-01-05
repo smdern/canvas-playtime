@@ -1,9 +1,7 @@
 $(document).ready ->
 
-  PlayTime = {}
-
   targetCanvas = document.getElementById('canvas')
-  PlayTime.game = new Game(targetCanvas)
+  game = new Playtime.Game(targetCanvas)
 
-  PlayTime.game.start()
+  game.start()
 
