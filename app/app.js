@@ -25272,14 +25272,24 @@ window.requestNextAnimationFrame =
     __extends(Circle, _super);
 
     Circle.prototype.defaultOptions = {
-      fillColor: createjs.Graphics.getRGB(0, 255, 0)
+      fillColor: createjs.Graphics.getRGB(0, 255, 0),
+      radius: 40,
+      x: 0,
+      y: 0
     };
 
     function Circle(args) {
+      var _this = this;
+      if (args == null) {
+        args = {};
+      }
       Circle.__super__.constructor.apply(this, arguments);
       _.defaults(args, this.defaultOptions);
-      this.graphics.beginFill(this.defaultOptions.fillColor);
-      this.graphics.drawCircle(0, 0, 40);
+      _.each(args, function(value, key) {
+        return _this[key] = args[key];
+      });
+      this.graphics.beginFill(this.fillColor);
+      this.graphics.drawCircle(this.x, this.y, this.radius);
     }
 
     return Circle;
