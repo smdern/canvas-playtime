@@ -1,0 +1,10 @@
+gzip_assets: off
+compress_assets: off
+
+javascripts:
+  app:
+    - vendor/*.js
+    - compiled/namespace.js
+    - compiled/skins/*.js
+    - compiled/*.js
+
