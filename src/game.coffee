@@ -10,7 +10,7 @@ class Playtime.Game
     @stage.addChild(@text)
 
   createShapes: =>
-    @text = new createjs.Text("Some Text")
+    @text = new createjs.Text("Some Text", Playtime.Fonts.sansLarge, Playtime.Colors.green)
     @text.x = 10
     @text.y = 20
 

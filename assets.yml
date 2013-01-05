@@ -5,6 +5,8 @@ javascripts:
   app:
     - vendor/*.js
     - compiled/namespace.js
+    - compiled/colors.js
+    - compiled/fonts.js
     - compiled/skins/*.js
     - compiled/*.js
 

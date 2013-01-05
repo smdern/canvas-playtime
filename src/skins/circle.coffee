@@ -1,7 +1,7 @@
 class Playtime.Skins.Circle extends createjs.Shape
 
   defaultOptions:
-    fillColor: createjs.Graphics.getRGB(0,255,0)
+    fillColor: Playtime.Colors.green
     radius: 40
     x: 0
     y: 0

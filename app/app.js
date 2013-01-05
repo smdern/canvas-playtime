@@ -25264,6 +25264,27 @@ window.requestNextAnimationFrame =
 }).call(this);
 
 (function() {
+
+  Playtime.Colors = {
+    green: createjs.Graphics.getRGB(0, 255, 0),
+    black: "#000000",
+    red: "#FF2600"
+  };
+
+}).call(this);
+
+(function() {
+  var sansFont;
+
+  sansFont = "Helvetica";
+
+  Playtime.Fonts = {
+    sansLarge: "30px " + sansFont
+  };
+
+}).call(this);
+
+(function() {
   var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
@@ -25272,7 +25293,7 @@ window.requestNextAnimationFrame =
     __extends(Circle, _super);
 
     Circle.prototype.defaultOptions = {
-      fillColor: createjs.Graphics.getRGB(0, 255, 0),
+      fillColor: Playtime.Colors.green,
       radius: 40,
       x: 0,
       y: 0
@@ -25299,16 +25320,6 @@ window.requestNextAnimationFrame =
 }).call(this);
 
 (function() {
-
-  Playtime.Colors = {
-    green: "#33A534",
-    black: "#000000",
-    red: "#FF2600"
-  };
-
-}).call(this);
-
-(function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
   Playtime.Game = (function() {
@@ -25330,7 +25341,7 @@ window.requestNextAnimationFrame =
     };
 
     Game.prototype.createShapes = function() {
-      this.text = new createjs.Text("Some Text");
+      this.text = new createjs.Text("Some Text", Playtime.Fonts.sansLarge, Playtime.Colors.green);
       this.text.x = 10;
       this.text.y = 20;
       this.circle = new Playtime.Skins.Circle();
